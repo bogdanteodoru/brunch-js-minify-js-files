@@ -5,24 +5,21 @@ sysPath = require 'path'
 uglify = require 'uglify-js'
 exists = fs.exists or path.exists
 
-module.exports = class minifyJsFiles
-  brunchPlugin: yes
+module.exports = class MinifyJsFiles
   active: yes
-  appPath: '/'
+  appPath: ''
   constructor: (@config) ->
     @active = @config.minifyJsFiles.active if @config.minifyJsFiles?.active
     @appPath = sysPath.join @config.paths.public, @appPath
 
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
-    files = @readDirSync(@imagePath)
+    files = @readDirSync(@appPath)
     @optimize(files)
 
-  optimize: (data, path, callback) ->
-    options = @options
-
+  optimize: (data) ->
     try
-      optimized = uglify.minify(data, options)
+      optimized = uglify.minify(data)
     catch err
       error = "JS minify failed on #{path}: #{err}"
     finally
