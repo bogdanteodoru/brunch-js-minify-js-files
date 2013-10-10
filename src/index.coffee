@@ -13,14 +13,21 @@ module.exports = class minifyJsFiles
     @active = @config.minifyJsFiles.active if @config.minifyJsFiles?.active
     @appPath = sysPath.join @config.paths.public, @appPath
 
-    console.log @active
-    console.log @appPath
-
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
     files = @readDirSync(@imagePath)
+    @optimize(files)
 
-    console.log files
+  optimize: (data, path, callback) ->
+    options = @options
+
+    try
+      optimized = uglify.minify(data, options)
+    catch err
+      error = "JS minify failed on #{path}: #{err}"
+    finally
+      result = optimized.code
+      console.log "The force is strong in this one. All files are minified."
 
   readDirSync: (baseDir) ->
     ## Mostly borrowed from npm wrench. thanks
