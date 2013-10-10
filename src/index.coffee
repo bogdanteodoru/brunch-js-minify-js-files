@@ -7,6 +7,7 @@ exists = fs.exists or path.exists
 
 module.exports = class minifyJsFiles
   brunchPlugin: yes
+  fileExtensions: "js"
   active: yes
   appPath: ''
   constructor: (@config) ->
@@ -48,7 +49,7 @@ module.exports = class minifyJsFiles
       files
 
     readdirSyncRecursive(baseDir).forEach((filepath) =>
-      fileList.push(filepath) if !!~@js.indexOf(path.extname(filepath).toLowerCase())
+      fileList.push(filepath) if !!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase())
     )
 
     return fileList
