@@ -7,7 +7,7 @@ exists = fs.exists or path.exists
 
 module.exports = class minifyJsFiles
   brunchPlugin: yes
-  fileExtensions: "js"
+  fileExtensions: ".js"
   active: yes
   appPath: ''
   options: null
@@ -34,8 +34,7 @@ module.exports = class minifyJsFiles
         error = "JS minify failed on #{path}: #{err}"
         return console.log(error)
       finally
-        result = if optimized
-          path: optimized.code
+        fs.writeFileSync path, optimized.code, "utf-8"
         console.log("Optimized file " + path)
 
   readDirSync: (baseDir) ->
