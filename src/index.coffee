@@ -9,7 +9,7 @@ module.exports = class minifyJsFiles
   brunchPlugin: yes
   fileExtensions: ".js"
   active: null
-  appPath: null
+  appPath: ''
   options: null
 
   constructor: (@config) ->
