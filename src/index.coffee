@@ -13,11 +13,14 @@ module.exports = class minifyJsFiles
     @active = @config.minifyJsFiles.active if @config.minifyJsFiles?.active
     @appPath = sysPath.join @config.paths.public, @appPath
 
+    console.log @active
+    console.log @appPath
+
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
     files = @readDirSync(@imagePath)
 
-    log files
+    console.log files
 
   readDirSync: (baseDir) ->
     ## Mostly borrowed from npm wrench. thanks
