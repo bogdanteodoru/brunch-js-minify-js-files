@@ -27,7 +27,7 @@ module.exports = class minifyJsFiles
   optimize: (paths) ->
     options = @options
 
-    data.forEach (path) ->
+    paths.forEach (path) ->
       try
         optimized = uglify.minify(path, options)
       catch err
@@ -61,7 +61,7 @@ module.exports = class minifyJsFiles
     filePaths = readdirSyncRecursive(baseDir)
 
     filePaths.forEach((filepath) =>
-      fileList.push(filepath) if (!!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase()) and (fs.statSync(filepath).isDirectory() is false) and (path.extname(filepath).toLowerCase() != ""))
+      fileList.push filepath  if !!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase()) and (fs.statSync(filepath).isDirectory() is false) and (path.extname(filepath).toLowerCase() isnt "")
     )
 
     return fileList
