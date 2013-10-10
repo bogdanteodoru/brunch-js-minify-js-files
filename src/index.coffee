@@ -10,9 +10,14 @@ module.exports = class minifyJsFiles
   fileExtensions: "js"
   active: yes
   appPath: ''
+  options: null
+
   constructor: (@config) ->
     @active = @config.minifyJsFiles.active if @config.minifyJsFiles?.active
     @appPath = sysPath.join @config.paths.public, @appPath
+    @options =
+      mangle: false
+      compress: true
 
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
@@ -20,21 +25,15 @@ module.exports = class minifyJsFiles
     @optimize(files)
 
   optimize: (data) ->
-    options =
-      mangle: false
-      compress: true
-
     data.forEach (path) ->
       try
-        optimized = uglify.minify(path, options)
-        # return console.log("Optimized file " + path)
+        optimized = uglify.minify(path, @options)
       catch err
         error = "JS minify failed on " + path + ": " + err
         return console.log(error)
       finally
         result = if optimized
           data: optimized.code
-
         console.log("Optimized file " + path)
 
     console.log("Booze is the answer. I don't remember the question.")
