@@ -8,8 +8,8 @@ exists = fs.exists or path.exists
 module.exports = class minifyJsFiles
   brunchPlugin: yes
   fileExtensions: ".js"
-  active: yes
-  appPath: ''
+  active: null
+  appPath: null
   options: null
 
   constructor: (@config) ->
@@ -21,6 +21,7 @@ module.exports = class minifyJsFiles
 
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
+    return if @active is false or @active is null
     files = @readDirSync(@appPath)
     @optimize(files)
 
@@ -38,7 +39,6 @@ module.exports = class minifyJsFiles
         console.log("Optimized file " + path)
 
   readDirSync: (baseDir) ->
-    ## Mostly borrowed from npm wrench. thanks
     baseDir = baseDir.replace(/\/$/, "")
     fileList = []
 
