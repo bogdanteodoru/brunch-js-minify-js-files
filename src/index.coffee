@@ -24,19 +24,19 @@ module.exports = class minifyJsFiles
     files = @readDirSync(@appPath)
     @optimize(files)
 
-  optimize: (data) ->
+  optimize: (paths) ->
+    options = @options
+
     data.forEach (path) ->
       try
-        optimized = uglify.minify(path, @options)
+        optimized = uglify.minify(path, options)
       catch err
-        error = "JS minify failed on " + path + ": " + err
+        error = "JS minify failed on #{path}: #{err}"
         return console.log(error)
       finally
         result = if optimized
-          data: optimized.code
+          path: optimized.code
         console.log("Optimized file " + path)
-
-    console.log("Booze is the answer. I don't remember the question.")
 
   readDirSync: (baseDir) ->
     ## Mostly borrowed from npm wrench. thanks
