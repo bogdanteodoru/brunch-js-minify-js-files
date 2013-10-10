@@ -5,7 +5,8 @@ sysPath = require 'path'
 uglify = require 'uglify-js'
 exists = fs.exists or path.exists
 
-module.exports = class MinifyJsFiles
+module.exports = class minifyJsFiles
+  brunchPlugin: yes
   active: yes
   appPath: ''
   constructor: (@config) ->
