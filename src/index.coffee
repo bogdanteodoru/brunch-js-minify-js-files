@@ -48,7 +48,9 @@ module.exports = class minifyJsFiles
 
       files
 
-    readdirSyncRecursive(baseDir).forEach((filepath) =>
+    filePaths = readdirSyncRecursive(baseDir)
+
+    filePaths.forEach((filepath) =>
       fileList.push(filepath) if !!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase())
     )
 
