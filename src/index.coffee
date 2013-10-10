@@ -27,10 +27,15 @@ module.exports = class minifyJsFiles
     data.forEach (path) ->
       try
         optimized = uglify.minify(path, options)
-        return console.log("Optimized file " + path)
+        # return console.log("Optimized file " + path)
       catch err
         error = "JS minify failed on " + path + ": " + err
         return console.log(error)
+      finally
+        result = if optimized
+          data: optimized.code
+
+        console.log("Optimized file " + path)
 
     console.log("Booze is the answer. I don't remember the question.")
 
