@@ -20,13 +20,19 @@ module.exports = class minifyJsFiles
     @optimize(files)
 
   optimize: (data) ->
-    try
-      optimized = uglify.minify(data)
-    catch err
-      error = "JS minify failed on #{path}: #{err}"
-    finally
-      result = optimized.code
-      console.log "The force is strong in this one. All files are minified."
+    options =
+      mangle: false
+      compress: true
+
+    data.forEach (path) ->
+      try
+        optimized = uglify.minify(path, options)
+        return console.log("Optimized file " + path)
+      catch err
+        error = "JS minify failed on " + path + ": " + err
+        return console.log(error)
+
+    console.log("Booze is the answer. I don't remember the question.")
 
   readDirSync: (baseDir) ->
     ## Mostly borrowed from npm wrench. thanks
@@ -51,7 +57,7 @@ module.exports = class minifyJsFiles
     filePaths = readdirSyncRecursive(baseDir)
 
     filePaths.forEach((filepath) =>
-      fileList.push(filepath) if !!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase())
+      fileList.push(filepath) if !!~@fileExtensions.indexOf(path.extname(filepath).toLowerCase()) and fs.statSync(filepath).isDirectory() is false and path.extname(filepath).toLowerCase() != ""
     )
 
     return fileList
