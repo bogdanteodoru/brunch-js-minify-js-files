@@ -7,7 +7,7 @@ exists = fs.exists or path.exists
 
 module.exports = class minifyJsFiles
   brunchPlugin: yes
-  fileExtensions: ".js"
+  fileExtensions: null
   active: null
   appPath: ''
   options: null
@@ -18,6 +18,7 @@ module.exports = class minifyJsFiles
     @options =
       mangle: false
       compress: true
+    @fileExtensions = @config.minifyJsFiles.fileExtensions || ".js"
 
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
