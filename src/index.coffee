@@ -18,7 +18,10 @@ module.exports = class minifyJsFiles
     @options =
       mangle: false
       compress: true
-    @fileExtensions = @config.minifyJsFiles.fileExtensions || ".js"
+
+    @fileExtensions = '.js'
+    if (@config.minifyJsFiles && @config.minifyJsFiles.fileExtensions)
+      @fileExtensions = @config.minifyJsFiles.fileExtensions
 
   onCompile: (generatedFiles) ->
     return unless fs.existsSync(@appPath)
