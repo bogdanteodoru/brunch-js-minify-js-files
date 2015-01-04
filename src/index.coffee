@@ -3,6 +3,7 @@ fs = require "fs"
 path = require "path"
 sysPath = require 'path'
 uglify = require 'uglify-js'
+jsonMinify = require 'node-json-minify'
 exists = fs.exists or path.exists
 
 module.exports = class minifyJsFiles
@@ -34,9 +35,18 @@ module.exports = class minifyJsFiles
 
     paths.forEach (path) ->
       try
-        optimized = uglify.minify(path, options)
+        switch sysPath.extname(path)
+          when ".js"
+            optimized = uglify.minify(path, options)
+          when ".json"
+            optimized = (
+              code: jsonMinify(fs.readFileSync(path).toString())
+              map: "null"
+            )
+          else
+            throw "Unknown file-extension"
       catch err
-        error = "JS minify failed on #{path}: #{err}"
+        error = "Minification failed for #{path}: #{err}"
         return console.log(error)
       finally
         fs.writeFileSync path, optimized.code, "utf-8"
