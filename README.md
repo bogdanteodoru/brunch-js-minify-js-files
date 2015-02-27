@@ -19,4 +19,18 @@ Just add the folowing into your `config.coffee`/`brunch-config.coffee` file:
 minifyJsFiles:
   active: true # if false it doesn't do anything ;)
   fileExtensions: [".js", ".json"] # optional: when not specified, ".js" is used.
+  options: {} # optional: when not specified {mangle:false, compress:true} is used.
+```
+
+**Preserving comments**
+Use minifyJsFiles.options.output.comments to control how comments are minified. You can pass one of the following values:
+- "all" to keep all comments
+- a valid JS regexp to keep only comments that match.
+Note that currently not *all* comments can be kept when compression is on, because of dead code removal or cascading statements into sequences.
+
+```coffeescript
+minifyJsFiles:
+  options:
+    output:
+      comments: /@license|@preserve|^!/
 ```
