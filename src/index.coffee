@@ -20,6 +20,10 @@ module.exports = class minifyJsFiles
       mangle: false
       compress: true
 
+    if typeof (optionsObj = @config.minifyJsFiles?.options) is 'object'
+      for key of optionsObj
+        @options[key] = optionsObj[key] if optionsObj.hasOwnProperty(key)
+
     @fileExtensions = '.js'
     if (@config.minifyJsFiles && @config.minifyJsFiles.fileExtensions)
       @fileExtensions = @config.minifyJsFiles.fileExtensions
